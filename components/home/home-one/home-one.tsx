@@ -1,15 +1,17 @@
+"use client"; // Required for onClick events and hooks
+
 import React from 'react';
-import Head from 'next/head';
 import Navbar from '@/components/navbar/navbar';
+import { useRouter } from 'next/navigation'; // Import the router hook
 
 export default function HomeSectionOne() {
+  const router = useRouter(); // Initialize the router
+
   return (
     <>
-      <Head>
-        <title>Equilibrate.AI</title>
-        <meta name="description" content="Democratizing technology with AI" />
-      </Head>
-
+      {/* Note: In the App Router (app/ directory), <Head> is usually replaced by metadata export in layout.tsx or page.tsx. 
+          However, if you are using the Pages router or need it here, you can keep next/head. */}
+      
       {/* Main Container - Full Screen */}
       <main className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center font-sans">
         
@@ -46,6 +48,7 @@ export default function HomeSectionOne() {
           </p>
 
           <button 
+            onClick={() => router.push('/products')} // Navigates to app/products
             className="
               group
               px-8 py-3 
@@ -57,6 +60,7 @@ export default function HomeSectionOne() {
               hover:bg-white hover:text-black 
               transition-all duration-300 ease-in-out
               font-semibold text-lg tracking-wide
+              cursor-pointer
             "
           >
             Explore Products
