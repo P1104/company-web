@@ -77,7 +77,8 @@ const CommandInput = React.forwardRef<
       {...props}
     />
   </div>
-))
+));
+CommandInput.displayName = "CommandInput"; // <-- Add this line!
 
 function CommandList({
   className,

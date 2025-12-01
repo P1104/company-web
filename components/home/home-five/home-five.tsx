@@ -1,9 +1,10 @@
-'use client';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @next/next/no-img-element */
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import TextType from '@/components/TextType';
+import React, { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import TextType from "@/components/TextType";
 import {
   Carousel,
   CarouselApi,
@@ -15,28 +16,32 @@ import {
 const features = [
   {
     id: "communities",
-    title: "Enriching Communities",
-    description: "Our mission extends beyond business. By enabling industries to thrive through advanced technology, we contribute to building stronger communities and driving meaningful change on a global scale.",
-    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop"
+    title: "Security",
+    description:
+      "Enterprise-grade security protocols ensuring your data remains protected and compliant at all times.",
+    image: "/security.png",
   },
   {
     id: "solutions",
-    title: "End-to-End Solutions at Core",
-    description: "As a fresh and dynamic startup, we specialize in building smart AI chatbots and data-driven analytics solutions tailored for modern business needs. Our small but passionate team brings innovative thinking to every project.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+    title: "Performance",
+    description:
+      "Optimized solutions delivering exceptional speed and reliability for mission-critical operations.",
+    image: "/performance.png",
   },
   {
     id: "innovation",
-    title: "Accessible Innovation",
-    description: "We bring the power of cutting-edge AI and data analytics within your reach. By streamlining our processes and refining our solutions, we ensure that innovation remains accessible and cost-effective for every business.",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop"
+    title: "Innovation",
+    description:
+      "Cutting-edge AI technology designed to enhance productivity and drive measurable business growth.",
+    image: "/innovation.png",
   },
   {
     id: "sustainability",
-    title: "Sustainability at Core",
-    description: "We believe in transforming industries responsibly. Our AI-driven solutions are designed to not only drive operational efficiency but also promote sustainable practices, leaving a lasting positive impact on the environment.",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2070&auto=format&fit=crop"
-  }
+    title: "Real-Time Analytics",
+    description:
+      "Comprehensive dashboards delivering instant visibility into performance metrics and business intelligence.",
+    image: "/realtime.png",
+  },
 ];
 
 export default function HomeSectionFive() {
@@ -63,31 +68,29 @@ export default function HomeSectionFive() {
 
   return (
     <div className="w-full bg-[#FFFAF7] flex flex-col items-center justify-center p-4 md:p-8 lg:p-16 relative overflow-hidden">
-      
-      {/* Decorative Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-         <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-         <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
+      <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+        <div className="absolute top-4 sm:top-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute bottom-4 sm:bottom-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute top-0 left-4 sm:left-10 h-full w-px sm:w-1 bg-gray-400"></div>
+        <div className="absolute top-0 right-4 sm:right-10 h-full w-px sm:w-1 bg-gray-400"></div>
       </div>
 
       <div className="w-full max-w-[1600px] mx-auto">
         {/* Section Header & Controls */}
         <div className="mb-8 flex flex-col md:flex-row items-center justify-center md:mb-14 lg:mb-16 relative z-10">
           <div className="flex flex-col gap-4 w-full md:w-2/3">
-             <div className="text-left">
-                <TextType 
-                  text={["Why Equilibrate Leads the Future"]}
-                  typingSpeed={75}
-                  pauseDuration={1500}
-                  showCursor={true}
-                  cursorCharacter="|"
-                  className='text-3xl md:text-5xl lg:text-6xl font-bold text-black tracking-tight mb-4'
-                />
-             </div>
+            <div className="text-center">
+              <TextType
+                text={["Our Philosophy"]}
+                typingSpeed={75}
+                pauseDuration={1500}
+                showCursor={true}
+                cursorCharacter="|"
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-black tracking-tight mb-4"
+              />
+            </div>
           </div>
-          
+
           {/* Carousel Controls */}
           {/* <div className="hidden shrink-0 flex-row items-end gap-2 md:flex">
             <Button
@@ -136,10 +139,10 @@ export default function HomeSectionFive() {
                       alt={item.title}
                       className="absolute h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                     />
-                    
+
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-                    
+
                     {/* Content */}
                     <div className="absolute inset-x-0 bottom-0 flex flex-col items-start p-6 md:p-8 text-white">
                       <h3 className="mb-3 text-xl font-bold md:text-2xl leading-tight">

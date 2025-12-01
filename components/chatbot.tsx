@@ -2,24 +2,8 @@
 "use client"
 
 import { useState, useRef, useEffect, type FormEvent } from "react"
-import { X, Mic, VolumeX, Volume2, Send, Play, Pause } from "lucide-react"
+import { X, Mic, VolumeX, Volume2, Send, Play, Pause, Bot } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-    ChatBubble,
-    ChatBubbleMessage,
-} from "@/components/ui/chat-bubble"
-import { ChatInput } from "@/components/ui/chat-input"
-import {
-    ExpandableChat,
-    ExpandableChatHeader,
-    ExpandableChatBody,
-    ExpandableChatFooter,
-} from "@/components/ui/expandable-chat"
-import { ChatMessageList } from "@/components/ui/chat-message-list"
-import { Switch } from "@/components/ui/switch"
-import { AIVoiceInput } from "@/components/ui/ai-voice-input";
-import { callSarvamSTT } from "@/services/api/stt-api";
-import { generateResponse } from "@/services/utils/chatHelpers";
 
 interface Message {
     id: number;
@@ -32,14 +16,13 @@ interface Message {
 const EDCSChatBot = ({ headerTitle = "Chat Bot ✨" }) => {
     const [chatInput, setChatInput] = useState<string>('')
     const [showRecorder, setShowRecorder] = useState<boolean>(false);
-    const [chatArray, setChatArray] = useState<string[]>([])
-    const [chatString, setChatString] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [ttsAudioUrl, setTtsAudioUrl] = useState<string | null>(null);
-    const [kannadaOption, setKannadaOption] = useState<boolean>(false);
     const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const audioRef = useRef<HTMLAudioElement>(null);
+    const chatEndRef = useRef<HTMLDivElement>(null);
 
     const [messages, setMessages] = useState<Message[]>([
         {
@@ -49,6 +32,10 @@ const EDCSChatBot = ({ headerTitle = "Chat Bot ✨" }) => {
             chatType: "",
         },
     ])
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
     useEffect(() => {
         if (ttsAudioUrl && audioEnabled && audioRef.current) {
@@ -64,75 +51,8 @@ const EDCSChatBot = ({ headerTitle = "Chat Bot ✨" }) => {
         }
     }, [ttsAudioUrl, audioEnabled]);
 
-    const handleStart = () => {
-    };
-
-    const handleSTT = async (audioBlob: Blob) => {
-        console.log("Calling STT API...");
-        try {
-            const text = await callSarvamSTT(audioBlob, kannadaOption);
-
-            if (text) {
-                setMessages(prev => [
-                    ...prev,
-                    {
-                        id: Date.now(),
-                        content: text,
-                        sender: "user",
-                        timestamp: new Date(),
-                        chatType: "",
-                    }
-                ]);
-
-                const newChatString = chatString + `,user:${text}`;
-                setChatString(newChatString);
-
-                await generateResponseForVoice(text, newChatString);
-            } else {
-                console.log("STT returned no text");
-            }
-        } catch (error) {
-            console.error("Error in STT processing:", error);
-        }
-    };
-
-    const generateResponseForVoice = async (userMessage: string, newChatString: string) => {
-        try {
-            await generateResponse(
-                userMessage,
-                newChatString,
-                setIsLoading,
-                setMessages,
-                setChatArray,
-                setChatString,
-                chatArray,
-                audioEnabled,
-                kannadaOption,
-                (url: string | null) => setTtsAudioUrl(url),
-            );
-        }
-
-        finally {
-        }
-    };
-
-    const handleStop = async ({ duration, audioBlob }: { duration: number, audioBlob: Blob | null }) => {
-        if (audioBlob && audioBlob.size > 0) {
-            try {
-                const buffer = await audioBlob.arrayBuffer();
-                const processedBlob = new Blob([buffer], { type: "audio/wav" });
-                await handleSTT(processedBlob);
-            } catch (error) {
-                console.error("Recording processing failed:", error);
-            }
-        } else {
-            console.error("Recording Failed: Empty audio blob");
-        }
-    };
-
     const handleChat = (userInput?: string) => {
         let userMessage = ''
-        let newChatString = ''
 
         if (userInput === undefined) {
             if (chatInput.trim() === '') return;
@@ -143,7 +63,6 @@ const EDCSChatBot = ({ headerTitle = "Chat Bot ✨" }) => {
 
         if (userMessage === '') return;
 
-        newChatString = chatString + `,user:${userMessage}`
         setChatInput("")
 
         setMessages((prev) => [
@@ -157,36 +76,28 @@ const EDCSChatBot = ({ headerTitle = "Chat Bot ✨" }) => {
             }
         ])
 
-        setChatString(newChatString)
-
+        setIsLoading(true);
+        
         setTimeout(() => {
-            generateResponse(
-                userMessage,
-                newChatString,
-                setIsLoading,
-                setMessages,
-                setChatArray,
-                setChatString,
-                chatArray,
-                audioEnabled,
-                kannadaOption,
-                (url: string | null) => setTtsAudioUrl(url),
-            )
-        }, 600)
+            setMessages((prev) => [
+                ...prev,
+                {
+                    id: Date.now(),
+                    content: "This is a mock response. Connect your API to get real responses.",
+                    sender: "bot",
+                    timestamp: new Date(),
+                    chatType: "",
+                }
+            ]);
+            setIsLoading(false);
+        }, 1000);
     }
 
-
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === "Enter" && !event.shiftKey && window.innerWidth > 800) {
+        if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault()
             handleChat(chatInput)
         }
-    }
-
-    const handleSubmit = (e: FormEvent) => {
-        e.preventDefault()
-        if (!chatInput.trim()) return
-        handleChat(chatInput)
     }
 
     const toggleAudioPlayback = () => {
@@ -201,165 +112,174 @@ const EDCSChatBot = ({ headerTitle = "Chat Bot ✨" }) => {
         }
     };
 
+    if (!isOpen) {
+        return (
+            <div className="fixed bottom-4 right-4 z-40">
+                <Button
+                    onClick={() => setIsOpen(true)}
+                    className="h-14 w-14 rounded-full shadow-lg"
+                    size="icon"
+                >
+                    <Bot className="h-6 w-6" />
+                </Button>
+            </div>
+        );
+    }
+
     return (
-        <div
-            className="w-full theme-custom"
-            style={{
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat"
-            }}
-        >
+        <div className="fixed bottom-4 right-4 z-40 w-11/12 sm:w-96 max-h-[85vh] md:max-h-[90vh] flex flex-col bg-white rounded-lg shadow-2xl overflow-hidden">
             {ttsAudioUrl && (
                 <audio ref={audioRef} src={ttsAudioUrl} className="hidden" />
             )}
-            <ExpandableChat
-                size="lg"
-                position="bottom-right"
-            >
-                <ExpandableChatHeader className="flex flex-col text-center justify-center">
-                    <div className="flex items-center justify-between w-full mb-1">
-                        {/* <ToggleGroup
-                            type="single"
-                            value={kannadaOption ? "kn" : "en"}
-                            onValueChange={(value) => {
-                                if (value) setKannadaOption(value === "kn");
-                            }}
-                            className="border border-muted rounded-md p-1"
-                        >
-                            <ToggleGroupItem
-                                value="en"
-                                aria-label="English"
-                                className="text-xs px-3 py-1 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-                            >
-                                Eng
-                            </ToggleGroupItem>
-                            <ToggleGroupItem
-                                value="kn"
-                                aria-label="Kannada"
-                                className="text-xs px-3 py-1 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-                            >
-                                ಕನ್ನಡ
-                            </ToggleGroupItem>
-                        </ToggleGroup> */}
 
-                        <h2 className="text-xl font-semibold">{headerTitle}</h2>
-
-                        <div className="flex items-center space-x-2">
-                            <div className="flex items-center space-x-1">
-                                {audioEnabled ?
-                                    <Volume2 className="h-4 w-4 text-green-500" /> :
-                                    <VolumeX className="h-4 w-4 text-red-500" />
-                                }
-                                <Switch
-                                    checked={audioEnabled}
-                                    onCheckedChange={() => {
-                                        setAudioEnabled(!audioEnabled);
-                                    }}
-                                />
-                            </div>
-
-                            {audioEnabled && ttsAudioUrl && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="h-6 w-6"
-                                    onClick={toggleAudioPlayback}
-                                    title={isPlaying ? "Pause" : "Play"}
-                                >
-                                    {isPlaying ? (
-                                        <Pause className="size-3.5" />
-                                    ) : (
-                                        <Play className="size-3.5" />
-                                    )}
-                                </Button>
-                            )}
-                        </div>
+            {/* Header */}
+            <div className="flex flex-col border-b bg-gradient-to-r from-blue-500 to-blue-600 text-white p-3 md:p-4">
+                <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                        <Bot className="h-5 w-5" />
+                        <h2 className="text-base md:text-lg font-semibold">{headerTitle}</h2>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsOpen(false)}
+                        className="h-6 w-6 hover:bg-blue-700 text-white"
+                    >
+                        <X className="h-4 w-4" />
+                    </Button>
+                </div>
+
+                <div className="flex items-center justify-between">
+                    <p className="text-xs md:text-sm opacity-90">
                         Ask me anything.
                     </p>
-                </ExpandableChatHeader>
 
-                <ExpandableChatBody className="overflow-y-hidden">
-                    <ChatMessageList>
-                        {messages.map((message) => (
-                            <div key={message.id} className="flex flex-col">
-                                <ChatBubble
-                                    variant={message.sender === "user" ? "sent" : "received"}
-                                >
-                                    <ChatBubbleMessage
-                                        variant={message.sender === "user" ? "sent" : "received"}
-                                    >
-                                        <span>{message.content}</span>
-                                    </ChatBubbleMessage>
-                                </ChatBubble>
+                    <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
+                            {audioEnabled ?
+                                <Volume2 className="h-3.5 w-3.5" /> :
+                                <VolumeX className="h-3.5 w-3.5" />
+                            }
+                            <button
+                                onClick={() => setAudioEnabled(!audioEnabled)}
+                                className="bg-blue-700 rounded p-0.5"
+                            >
+                                <div className={`w-4 h-2.5 rounded-full transition-colors ${audioEnabled ? 'bg-white' : 'bg-gray-300'}`} />
+                            </button>
+                        </div>
 
-                                <div className={`text-xs text-muted-foreground ${message.sender === "user" ? "text-right" : "text-left"} px-2`}>
-                                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                </div>
-                            </div>
-                        ))}
-
-                        {isLoading && (
-                            <ChatBubble variant="received">
-                                <ChatBubbleMessage isLoading />
-                            </ChatBubble>
-                        )}
-                    </ChatMessageList>
-                </ExpandableChatBody>
-
-                {showRecorder ? (
-                    <div className="border-t py-2 px-4 bg-background">
-                        <div className="relative">
-                            <AIVoiceInput
-                                onStart={handleStart}
-                                onStop={handleStop}
-                            />
+                        {audioEnabled && ttsAudioUrl && (
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                onClick={() => setShowRecorder(false)}
-                                className="absolute right-2 top-0 h-6 w-6"
-                                title="Cancel"
+                                className="h-5 w-5 hover:bg-blue-700 text-white p-0"
+                                onClick={toggleAudioPlayback}
+                                title={isPlaying ? "Pause" : "Play"}
                             >
-                                <X className="h-3.5 w-3.5" />
+                                {isPlaying ? (
+                                    <Pause className="h-3 w-3" />
+                                ) : (
+                                    <Play className="h-3 w-3" />
+                                )}
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Messages Area */}
+            <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 bg-gray-50">
+                {messages.map((message) => (
+                    <div key={message.id} className="flex flex-col">
+                        <div
+                            className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
+                        >
+                            <div
+                                className={`max-w-xs md:max-w-sm px-3 py-2 rounded-lg text-sm ${
+                                    message.sender === "user"
+                                        ? "bg-blue-500 text-white rounded-br-none"
+                                        : "bg-white text-gray-800 rounded-bl-none border border-gray-200"
+                                }`}
+                            >
+                                <span className="break-words">{message.content}</span>
+                            </div>
+                        </div>
+                        <div
+                            className={`text-xs text-gray-500 mt-1 ${
+                                message.sender === "user" ? "text-right" : "text-left"
+                            } px-2`}
+                        >
+                            {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                    </div>
+                ))}
+
+                {isLoading && (
+                    <div className="flex justify-start">
+                        <div className="bg-white text-gray-800 px-3 py-2 rounded-lg rounded-bl-none border border-gray-200">
+                            <div className="flex gap-1">
+                                <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce" />
+                                <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '0.1s'}} />
+                                <div className="h-2 w-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '0.2s'}} />
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div ref={chatEndRef} />
+            </div>
+
+            {/* Input Area */}
+            {showRecorder ? (
+                <div className="border-t p-2 md:p-3 bg-white">
+                    <div className="relative flex items-center gap-2">
+                        <div className="flex-1 flex items-center gap-2 bg-gray-100 rounded px-3 py-2">
+                            <Mic className="h-4 w-4 text-red-500 animate-pulse" />
+                            <span className="text-xs text-gray-600">Recording...</span>
+                        </div>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setShowRecorder(false)}
+                            className="h-8 w-8"
+                            title="Cancel"
+                        >
+                            <X className="h-4 w-4" />
+                        </Button>
+                    </div>
+                </div>
+            ) : (
+                <div className="border-t bg-white p-2 md:p-3">
+                    <div className="space-y-2">
+                        <textarea
+                            value={chatInput}
+                            onChange={(e) => setChatInput(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Type your message..."
+                            className="w-full min-h-10 md:min-h-12 p-2 border border-gray-300 rounded-lg resize-none text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            rows={1}
+                        />
+                        <div className="flex items-center justify-between gap-2">
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                type="button"
+                                onClick={() => setShowRecorder(true)}
+                                className="h-8 w-8 md:h-9 md:w-9"
+                            >
+                                <Mic className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                                onClick={() => handleChat(chatInput)}
+                                size="sm" 
+                                className="gap-1.5"
+                            >
+                                <Send className="h-3.5 w-3.5" />
+                                <span className="text-xs md:text-sm">Send</span>
                             </Button>
                         </div>
                     </div>
-                ) : (
-                    <ExpandableChatFooter>
-                        <form
-                            onSubmit={handleSubmit}
-                            className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
-                        >
-                            <ChatInput
-                                value={chatInput}
-                                onChange={(e) => setChatInput(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                placeholder="Type your message..."
-                                className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
-                            />
-                            <div className="flex items-center p-3 pt-0 justify-between">
-                                <div className="flex">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        type="button"
-                                        onClick={() => setShowRecorder(true)}
-                                    >
-                                        <Mic className="size-4 hover:text-green-500" />
-                                    </Button>
-                                </div>
-                                <Button type="submit" size="sm" className="ml-auto gap-1.5">
-                                    Send
-                                    <Send className="size-3.5" />
-                                </Button>
-                            </div>
-                        </form>
-                    </ExpandableChatFooter>
-                )}
-            </ExpandableChat>
+                </div>
+            )}
         </div>
     )
 }

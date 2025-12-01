@@ -188,15 +188,10 @@ export function Footer() {
   return (
     // Theme Update: Background & Grid Lines
     <footer 
-      className="relative bg-[#FFFAF7] border-t border-gray-200 overflow-hidden mt-auto font-sans"
+      className="relative bg-[#FFFAF7] border-t border-gray-600 overflow-hidden mt-auto font-sans"
       style={{ position: 'relative', clear: 'both', minHeight: 'auto' }}
     >
-      <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
-         <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-         <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
-      </div>
+
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-12 items-center">
@@ -221,7 +216,7 @@ export function Footer() {
                     <Mail className="w-5 h-5 text-black" />
                   </div>
                   <span className="text-gray-700 group-hover:text-black font-medium transition-colors">
-                    anish.navali@equilibrateai.com
+                    support@equilibrateai.com
                   </span>
                 </a>
                 <a href="tel:+91-9606024155" className="flex items-center gap-4 group cursor-pointer">

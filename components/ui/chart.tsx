@@ -125,6 +125,15 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed"
     nameKey?: string
     labelKey?: string
+    payload?: Array<{
+        name: string
+        value: number | string
+        payload: Record<string, unknown>
+        dataKey: string | number
+        color: string
+        fill: string
+    }>
+    label?: string | number
   }) {
   const { config } = useChart()
 
@@ -179,10 +188,16 @@ function ChartTooltipContent({
     >
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
-        {payload.map((item, index) => {
+        {payload.map((item: {
+            name?: string
+            value?: number | string
+            dataKey?: string | number
+            payload?: Record<string, unknown>
+            color?: string
+        }, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`
           const itemConfig = getPayloadConfigFromPayload(config, item, key)
-          const indicatorColor = color || item.payload.fill || item.color
+          const indicatorColor = color || (item.payload as { fill?: string })?.fill || item.color
 
           return (
             <div
@@ -193,7 +208,8 @@ function ChartTooltipContent({
               )}
             >
               {formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, item.payload)
+                // FIX: Passed the main 'payload' array as the 5th argument
+                formatter(item.value, item.name, item, index, payload)
               ) : (
                 <>
                   {itemConfig?.icon ? (
@@ -257,9 +273,18 @@ function ChartLegendContent({
   verticalAlign = "bottom",
   nameKey,
 }: React.ComponentProps<"div"> &
-  Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+  {
     hideIcon?: boolean
     nameKey?: string
+    verticalAlign?: "top" | "middle" | "bottom"
+    payload?: Array<{
+        value: unknown
+        id?: string
+        type?: string
+        color?: string
+        dataKey?: string
+        payload?: unknown
+    }>
   }) {
   const { config } = useChart()
 
@@ -281,7 +306,7 @@ function ChartLegendContent({
 
         return (
           <div
-            key={item.value}
+            key={item.value as React.Key}
             className={cn(
               "[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3"
             )}

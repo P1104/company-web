@@ -46,14 +46,15 @@ export const ContactSectionTwo = () => {
   };
 
   return (
-    <section className="pb-28 relative z-10 pt-14 bg-[#FFFAF7] relative overflow-x-hidden font-sans">
+    <section className="pb-28 relative z-10 pt-14 bg-[#FFFAF7] relative sm:pt-30 md:pt-32 overflow-x-hidden font-sans">
 
-            {/* Theme Decorative Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-         <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-         <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
+    
+      {/* Responsive Decorative Lines */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+        <div className="absolute top-4 sm:top-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute bottom-4 sm:bottom-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute top-0 left-4 sm:left-10 h-full w-px sm:w-1 bg-gray-400"></div>
+        <div className="absolute top-0 right-4 sm:right-10 h-full w-px sm:w-1 bg-gray-400"></div>
       </div>
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         <motion.div

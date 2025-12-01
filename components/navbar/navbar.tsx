@@ -1,14 +1,23 @@
 "use client";
 
-import React from 'react';
+import React from "react";
 import * as React_hooks from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOnClickOutside } from "usehooks-ts";
 import { cn } from "@/lib/utils";
-import { LucideIcon, Home, Zap, CreditCard, Package, Mail, Menu, X } from "lucide-react";
+import {
+  LucideIcon,
+  Home,
+  Zap,
+  CreditCard,
+  Package,
+  Mail,
+  Menu,
+  X,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
-// --- Interfaces (Unchanged) ---
+// --- Interfaces ---
 
 interface Tab {
   title: string;
@@ -33,7 +42,7 @@ interface ExpandableTabsProps {
   onChange?: (index: number | null) => void;
 }
 
-// --- Animation Variants (Unchanged) ---
+// --- Animation Variants ---
 
 const buttonVariants = {
   initial: {
@@ -54,9 +63,9 @@ const spanVariants = {
   exit: { width: 0, opacity: 0 },
 };
 
-const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 };
+const transition = { delay: 0.1, type: "spring" as const, bounce: 0, duration: 0.6 };
 
-// --- Main Component ---
+// --- Expandable Tabs Component ---
 
 export function ExpandableTabs({
   tabs,
@@ -66,10 +75,10 @@ export function ExpandableTabs({
 }: ExpandableTabsProps) {
   const [selected, setSelected] = React_hooks.useState<number | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React_hooks.useState(false);
-  const outsideClickRef = React_hooks.useRef(null);
+  const outsideClickRef = React_hooks.useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  useOnClickOutside(outsideClickRef, () => {
+  useOnClickOutside(outsideClickRef as React.RefObject<HTMLElement>, () => {
     setSelected(null);
     onChange?.(null);
     setIsMobileMenuOpen(false);
@@ -78,7 +87,7 @@ export function ExpandableTabs({
   const handleSelect = (index: number) => {
     setSelected(index);
     onChange?.(index);
-    
+
     const tab = tabs[index];
     if (tab.type !== "separator" && tab.href) {
       router.push(tab.href);
@@ -92,7 +101,7 @@ export function ExpandableTabs({
 
   return (
     <div ref={outsideClickRef} className={cn("relative", className)}>
-      {/* Desktop View: Hidden on mobile (hidden on small, flex on md) */}
+      {/* Desktop View */}
       <div className="hidden md:flex flex-wrap items-center gap-2 rounded-2xl border bg-background p-1 shadow-sm">
         {tabs.map((tab, index) => {
           if (tab.type === "separator") {
@@ -135,7 +144,7 @@ export function ExpandableTabs({
         })}
       </div>
 
-      {/* Mobile Hamburger View: Visible only on small screens */}
+      {/* Mobile Hamburger View */}
       <div className="md:hidden">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -147,16 +156,21 @@ export function ExpandableTabs({
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 top-full mt-2 min-w-[200px] origin-top-right rounded-xl border bg-background p-2 shadow-lg z-50"
+              className="absolute bottom-full left-0 mb-3 min-w-[200px] origin-bottom-left rounded-xl border bg-background p-2 shadow-lg z-50"
             >
               <div className="flex flex-col gap-1">
                 {tabs.map((tab, index) => {
                   if (tab.type === "separator") {
-                    return <div key={`sep-${index}`} className="my-1 border-b border-border" />;
+                    return (
+                      <div
+                        key={`sep-${index}`}
+                        className="my-1 border-b border-border"
+                      />
+                    );
                   }
                   const Icon = tab.icon;
                   return (
@@ -165,7 +179,9 @@ export function ExpandableTabs({
                       onClick={() => handleSelect(index)}
                       className={cn(
                         "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-muted",
-                        selected === index ? activeColor : "text-muted-foreground"
+                        selected === index
+                          ? activeColor
+                          : "text-muted-foreground"
                       )}
                     >
                       <Icon size={18} />
@@ -181,6 +197,8 @@ export function ExpandableTabs({
     </div>
   );
 }
+
+// --- Navbar Component ---
 
 const Navbar = () => {
   const navTabs: TabItem[] = [
@@ -198,15 +216,62 @@ const Navbar = () => {
     }
   };
 
-  return (
+  // Show mobile nav only near the footer (bottom of page)
+  const [showMobileNav, setShowMobileNav] = React_hooks.useState(false);
 
-    <div className="w-full flex justify-end md:justify-center py-4 px-4">
-      <ExpandableTabs
-        tabs={navTabs}
-        activeColor="text-black"
-        onChange={handleTabChange}
-      />
-    </div>
+  React_hooks.useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const pageHeight = document.documentElement.scrollHeight;
+
+      const threshold = 1400; // px from bottom where nav starts to appear
+      if (scrollPosition >= pageHeight - threshold) {
+        setShowMobileNav(true);
+      } else {
+        setShowMobileNav(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // run once on mount
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <>
+      {/* Desktop: Sticky at Top (always visible) */}
+      <div className="hidden md:block sticky top-0 z-50 w-full py-4 px-4 pointer-events-none">
+        <div className="flex justify-center pointer-events-auto">
+          <ExpandableTabs
+            tabs={navTabs}
+            activeColor="text-black"
+            onChange={handleTabChange}
+          />
+        </div>
+      </div>
+
+      {/* Mobile: Bottom-left, only when near footer */}
+      <AnimatePresence>
+        {showMobileNav && (
+          <motion.div
+            className="md:hidden fixed bottom-6 left-6 z-50 pointer-events-none"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <div className="pointer-events-auto">
+              <ExpandableTabs
+                tabs={navTabs}
+                activeColor="text-black"
+                onChange={handleTabChange}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

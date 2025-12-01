@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer/footer";
 import EDCSChatBot from "@/components/chatbot";
+import Navbar from "@/components/navbar/navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
- <EDCSChatBot />
+        <div className="absolute top-6 left-0 right-0 z-50 flex justify-center">
+          <Navbar />
+        </div>{" "}
+        <EDCSChatBot />
         {children}
-        <Footer/>
+        <Footer />
       </body>
     </html>
   );

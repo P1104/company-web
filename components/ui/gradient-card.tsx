@@ -1,11 +1,11 @@
 'use client'
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState} from "react";
 import { motion } from "framer-motion";
 
 export const GradientCard = () => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [, setMousePosition] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
   // Handle mouse movement for 3D effect

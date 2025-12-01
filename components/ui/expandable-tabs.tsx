@@ -46,7 +46,7 @@ const spanVariants = {
   exit: { width: 0, opacity: 0 },
 };
 
-const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 };
+const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 } as const;
 
 export function ExpandableTabs({
   tabs,
@@ -55,7 +55,8 @@ export function ExpandableTabs({
   onChange,
 }: ExpandableTabsProps) {
   const [selected, setSelected] = React.useState<number | null>(null);
-  const outsideClickRef = React.useRef(null);
+  // FIX: Cast the initial null to satisfy the strict type requirement of useOnClickOutside
+  const outsideClickRef = React.useRef<HTMLDivElement>(null!);
 
   useOnClickOutside(outsideClickRef, () => {
     setSelected(null);

@@ -1,7 +1,7 @@
 "use client";
 
 import { Mic, X } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -33,6 +33,12 @@ export function AIVoiceInput({
   const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
 
+  // FIX: Generate stable random heights to avoid "purity" errors during render
+  const barHeights = useMemo(() => {
+    // eslint-disable-next-line react-hooks/purity
+    return Array.from({ length: visualizerBars }).map(() => 20 + Math.random() * 80);
+  }, [visualizerBars]);
+
   useEffect(() => {
     setIsClient(true);
     
@@ -47,20 +53,23 @@ export function AIVoiceInput({
     };
   }, []);
 
+  // FIX: Resolved 'intervalId' used before assignment and missing 'time' dependency
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    let intervalId: NodeJS.Timeout | undefined;
 
     if (isRecording) {
       // Start timer
       intervalId = setInterval(() => {
         setTime((t) => t + 1);
       }, 1000);
-    } else if (time > 0) {
-      clearInterval(intervalId);
+    } else {
+      // Reset time when recording stops
       setTime(0);
     }
 
-    return () => clearInterval(intervalId);
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [isRecording]);
 
   useEffect(() => {
@@ -196,7 +205,7 @@ export function AIVoiceInput({
         </span>
 
         <div className="h-3 w-56 flex items-center justify-center gap-0.5">
-          {[...Array(visualizerBars)].map((_, i) => (
+          {barHeights.map((height, i) => (
             <div
               key={i}
               className={cn(
@@ -208,7 +217,8 @@ export function AIVoiceInput({
               style={
                 isRecording && isClient
                   ? {
-                      height: `${20 + Math.random() * 80}%`,
+                      // FIX: Use stable pre-calculated height
+                      height: `${height}%`,
                       animationDelay: `${i * 0.05}s`,
                     }
                   : undefined

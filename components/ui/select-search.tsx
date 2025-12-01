@@ -42,10 +42,11 @@ export function SelectSearch({
 }: SelectSearchProps) {
   const [open, setOpen] = useState(false);
 
-  // Convert string array to option objects if needed
-  const normalizedOptions = Array.isArray(options) && options.length > 0 && typeof options[0] === 'string'
-    ? options.map(opt => ({ value: opt, label: opt }))
-    : options as { value: string; label: string }[];
+  // FIX: Explicitly typed normalizedOptions to ensure it's always an array of objects
+  const normalizedOptions: { value: string; label: string }[] = 
+    Array.isArray(options) && options.length > 0 && typeof options[0] === 'string'
+      ? (options as string[]).map(opt => ({ value: opt, label: opt }))
+      : (options as { value: string; label: string }[]);
 
   const selectedOption = normalizedOptions.find(option => option.value === value);
 

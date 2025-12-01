@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { motion, useInView, Variants } from "framer-motion";
 import Image from "next/image";
 
@@ -9,7 +9,7 @@ interface TeamMember {
   role: string;
   description: string;
   image?: string;
-  linkedin?: string; // Added linkedin property
+  linkedin?: string;
 }
 
 interface TeamSectionProps {
@@ -22,6 +22,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
 }) => {
   const cardRef = useRef(null);
   const isInView = useInView(cardRef, { once: true, amount: 0.2 });
+  const [imageError, setImageError] = useState(false);
 
   return (
     <motion.div
@@ -38,57 +39,66 @@ const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
       <div className="group relative w-full bg-white dark:bg-zinc-900 rounded-3xl shadow-lg dark:shadow-2xl dark:shadow-black/80 overflow-hidden transition-transform duration-700 ease-out hover:scale-[1.02]">
         
         {/* Image Section */}
-        <div className="relative overflow-hidden w-full aspect-square">
-          {member.image ? (
+        <div className="relative overflow-hidden w-full aspect-square bg-gradient-to-br from-gray-200 to-gray-300 dark:from-zinc-800 dark:to-zinc-700">
+          {member.image && !imageError ? (
             <Image
               src={member.image}
               alt={member.name}
               width={500}
               height={500}
+              priority={index < 3}
+              onError={() => setImageError(true)}
               className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              unoptimized // Add this if images are from external sources
             />
           ) : (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center transition-transform duration-700 ease-out group-hover:scale-[1.03]">
-               <span className="text-6xl font-bold text-gray-400">
-                  {member.name.charAt(0)}
-               </span>
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-8xl font-bold text-gray-400 dark:text-zinc-600">
+                {member.name.charAt(0).toUpperCase()}
+              </span>
             </div>
           )}
           
-          {/* Gradient Overlay - Kept for aesthetics, removed text */}
+          {/* Gradient Overlay */}
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 dark:from-black/80 to-transparent pointer-events-none"></div>
         </div>
 
         {/* Info Section */}
         <div className="p-4 flex items-center justify-between bg-white dark:bg-zinc-900">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             {/* Avatar Circle */}
-            <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-gray-200 dark:ring-zinc-700 transition-transform duration-500 ease-out group-hover:scale-110">
-              {member.image ? (
+            <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-gray-200 dark:ring-zinc-700 transition-transform duration-500 ease-out group-hover:scale-110 flex-shrink-0">
+              {member.image && !imageError ? (
                 <Image
                   src={member.image}
                   alt="Avatar"
-                  width={32}
-                  height={32}
+                  width={40}
+                  height={40}
+                  onError={() => setImageError(true)}
                   className="w-full h-full object-cover"
+                  unoptimized
                 />
               ) : (
-                <div className="w-full h-full bg-gray-300" />
+                <div className="w-full h-full bg-gray-300 dark:bg-zinc-600 flex items-center justify-center">
+                  <span className="text-lg font-bold text-gray-500 dark:text-zinc-400">
+                    {member.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
               )}
             </div>
             
-            {/* Text Info - Updated to show Name instead of Handle */}
-            <div className="transition-transform duration-500 ease-out group-hover:translate-x-1">
-              <div className="text-sm font-bold text-gray-900 dark:text-zinc-100">
+            {/* Text Info */}
+            <div className="transition-transform duration-500 ease-out group-hover:translate-x-1 min-w-0">
+              <div className="text-sm font-bold text-gray-900 dark:text-zinc-100 truncate">
                 {member.name}
               </div>
-              <div className="text-xs text-gray-500 dark:text-zinc-500 truncate max-w-[120px]">
+              <div className="text-xs text-gray-500 dark:text-zinc-500 truncate">
                 {member.role}
               </div>
             </div>
           </div>
 
-          {/* Profile Button - Converted to Link */}
+          {/* Profile Button */}
           <a
             href={member.linkedin || "#"}
             target="_blank"
@@ -96,7 +106,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
             className="bg-gray-900 dark:bg-zinc-800 text-white dark:text-zinc-100 rounded-lg px-4 py-2 text-sm font-medium
                      transition-all duration-500 ease-out transform hover:scale-105 
                      hover:bg-gray-800 dark:hover:bg-zinc-700
-                     active:scale-95 hover:shadow-md dark:hover:shadow-lg shadow-sm cursor-pointer text-center"
+                     active:scale-95 hover:shadow-md dark:hover:shadow-lg shadow-sm cursor-pointer text-center flex-shrink-0"
           >
             Profile
           </a>
@@ -112,7 +122,7 @@ export const AboutSectionTwo: React.FC<TeamSectionProps> = ({
       name: "Srinivas Navali",
       role: "Advisor",
       description: "IT Veteran with over 30 years experience.",
-      image: "/srinivas-navali-profilepic.jpg",
+      image: "/srinivas.jpg",
       linkedin: "https://www.linkedin.com/in/shrinivasnavali/", 
     },
     {
@@ -156,12 +166,12 @@ export const AboutSectionTwo: React.FC<TeamSectionProps> = ({
 
   return (
     <div className="w-full bg-[#FFFAF7] relative overflow-hidden py-20">
-      {/* Decorative Background Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-        <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-        <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-        <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-        <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
+      {/* Responsive Decorative Lines */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+        <div className="absolute top-4 sm:top-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute bottom-4 sm:bottom-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute top-0 left-4 sm:left-10 h-full w-px sm:w-1 bg-gray-400"></div>
+        <div className="absolute top-0 right-4 sm:right-10 h-full w-px sm:w-1 bg-gray-400"></div>
       </div>
 
       <div className="relative z-10 flex items-center justify-center">

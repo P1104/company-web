@@ -1,10 +1,11 @@
-"use client"
+"use client";
 import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText as GSAPSplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import Image from 'next/image';
+import { CheckCircle, Plus } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
 
@@ -79,6 +80,7 @@ const SplitText: React.FC<SplitTextProps> = ({
             ? `-=${Math.abs(marginValue)}${marginUnit}`
             : `+=${marginValue}${marginUnit}`;
       const start = `top ${startPct}%${sign}`;
+      
       let targets: Element[] = [];
       const assignTargets = (self: GSAPSplitText) => {
         if (splitType.includes('chars') && (self as GSAPSplitText).chars?.length)
@@ -87,6 +89,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         if (!targets.length && splitType.includes('lines') && self.lines.length) targets = self.lines;
         if (!targets.length) targets = self.chars || self.words || self.lines;
       };
+
       const splitInstance = new GSAPSplitText(el, {
         type: splitType,
         smartWrap: true,
@@ -122,7 +125,9 @@ const SplitText: React.FC<SplitTextProps> = ({
           );
         }
       });
+      
       el._rbsplitInstance = splitInstance;
+      
       return () => {
         ScrollTrigger.getAll().forEach(st => {
           if (st.trigger === el) st.kill();
@@ -158,47 +163,19 @@ const SplitText: React.FC<SplitTextProps> = ({
     
     switch (tag) {
       case 'h1':
-        return (
-          <h1 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>
-            {text}
-          </h1>
-        );
+        return <h1 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>{text}</h1>;
       case 'h2':
-        return (
-          <h2 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>
-            {text}
-          </h2>
-        );
+        return <h2 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>{text}</h2>;
       case 'h3':
-        return (
-          <h3 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>
-            {text}
-          </h3>
-        );
+        return <h3 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>{text}</h3>;
       case 'h4':
-        return (
-          <h4 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>
-            {text}
-          </h4>
-        );
+        return <h4 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>{text}</h4>;
       case 'h5':
-        return (
-          <h5 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>
-            {text}
-          </h5>
-        );
+        return <h5 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>{text}</h5>;
       case 'h6':
-        return (
-          <h6 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>
-            {text}
-          </h6>
-        );
+        return <h6 ref={ref as React.Ref<HTMLHeadingElement>} className={baseClasses}>{text}</h6>;
       default:
-        return (
-          <p ref={ref as React.Ref<HTMLParagraphElement>} className={baseClasses}>
-            {text}
-          </p>
-        );
+        return <p ref={ref as React.Ref<HTMLParagraphElement>} className={baseClasses}>{text}</p>;
     }
   };
 
@@ -206,67 +183,144 @@ const SplitText: React.FC<SplitTextProps> = ({
 };
 
 export default function HomeSectiontwo() {
-  const handleAnimationComplete = () => {
-    console.log('All letters have animated!');
-  };
-
   return (
-    <>
-      {/* MAIN BACKGROUND - Light beige/peach theme */}
-      <div className="w-full bg-[#FFFAF7] flex items-center justify-center p-4 md:p-8 lg:p-16 relative overflow-hidden">
-        {/* Subtle Accent Lines */}
-           
-        <div className="absolute inset-0 pointer-events-none opacity-10">
-          <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-          <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-          <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-          <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
-        </div>
+    // Added 'relative' here so the absolute lines stay inside this container
+    <div className="w-full bg-[#FFFAF7] p-4 md:p-8 lg:p-16 overflow-hidden font-sans text-gray-900 relative">
+      
+      {/* --- DECORATIVE LINES (Restored & Visible) --- */}
+      <div className="absolute inset-0 pointer-events-none">
+        
+<div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+  <div className="absolute top-4 sm:top-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+  <div className="absolute bottom-4 sm:bottom-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+  <div className="absolute top-0 left-4 sm:left-10 h-full w-px sm:w-1 bg-gray-400"></div>
+  <div className="absolute top-0 right-4 sm:right-10 h-full w-px sm:w-1 bg-gray-400"></div>
+</div>
 
-        {/* MAIN CARD CONTAINER */}
-        <div className="relative z-10 bg-white w-full max-w-7xl rounded-[2rem] overflow-hidden flex flex-col lg:flex-row shadow-sm min-h-[600px] transition-transform hover:scale-[1.01] duration-5000">
-          {/* LEFT CONTENT SECTION */}
-          <div className="flex-1 p-8 md:p-16 lg:p-16 flex flex-col justify-center">
-            {/* Heading with SplitText Animation */}
+      </div>
+
+      <div className="max-w-7xl mx-auto flex flex-col gap-12 md:gap-20 relative z-10">
+        
+        {/* --- HEADER SECTION --- */}
+        <div>
+
+
+          {/* Right Headline */}
+          <div className="lg:col-span-9">
             <SplitText
               text="Our Impact Story"
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-12 tracking-tight leading-tight"
+              className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-center"
               delay={100}
-              duration={5}
-              ease="power3.out"
+              duration={1.5}
               splitType="words"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.1}
-              rootMargin="-100px"
               tag="h2"
-              textAlign="left"
-              onLetterAnimationComplete={handleAnimationComplete}
-            />
-
-            {/* Description Text */}
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed font-medium tracking-wide mb-12">
-              Transforming state-wide data collection through innovative
-              technology solutions that serve millions of citizens across
-              Karnataka. We developed a comprehensive web application for
-              Karnataka&apos;s state-wide socio-economic survey, creating an
-              integrated ecosystem of digital tools that revolutionized data
-              collection and enumerator training processes.
-            </p>
-          </div>
-
-          {/* RIGHT IMAGE SECTION */}
-          <div className="flex-1 relative min-h-[400px] lg:min-h-full">
-            <Image
-              width={500}
-              height={500}
-              src="/anish_explain.jpg"
-              alt="Team meeting"
-              className="absolute inset-0 w-full h-full object-cover lg:rounded-r-[2rem] lg:rounded-bl-[2rem]"
             />
           </div>
         </div>
+
+        {/* --- MAIN CONTENT GRID --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
+          
+          {/* LEFT COLUMN: Large Image */}
+          <div className="relative w-full min-h-[500px] lg:h-full rounded-3xl overflow-hidden shadow-sm">
+             <Image
+                width={800}
+                height={1000}
+                src="/anish_explain.jpg"
+                alt="Team meeting and presentation"
+                className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+             />
+
+          </div>
+
+          {/* RIGHT COLUMN: Text + 2x2 Grid */}
+          <div className="flex flex-col gap-8">
+            
+            {/* Description Text */}
+            <div className="flex flex-col gap-6">
+               <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center text-white shadow-inner flex-shrink-0">
+                      <Image
+                        width={30}
+                        height={30}
+                        src="/karnataka.png"
+                        alt="Karnataka Government Logo"
+                        className="object-contain"
+                      />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900">Karnataka Government</h3>
+               </div>
+
+              <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                We developed a comprehensive web application for Karnataka&apos;s state-wide 
+                socio-economic survey, creating an integrated ecosystem of digital tools that 
+                revolutionized data collection and enumerator training processes for millions 
+                of citizens.
+              </p>
+            </div>
+
+            {/* 2x2 GRID LAYOUT */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-grow">
+              
+              {/* Card 1 */}
+              <div className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between h-[200px] md:h-[240px] group hover:shadow-md transition-all">
+                 <div className="flex justify-between items-start">
+                    <span className="text-4xl md:text-5xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      150K+
+                    </span>
+                   
+                 </div>
+                 <div>
+                    <p className="font-bold text-gray-900">Citizens Served</p>
+                    <p className="text-sm text-gray-500">Across all districts</p>
+                 </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between h-[200px] md:h-[240px] group hover:shadow-md transition-all">
+                 <div className="flex justify-between items-start">
+                    <span className="text-4xl md:text-5xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors">
+                      95%
+                    </span>
+            
+                 </div>
+                 <div>
+                    <p className="font-bold text-gray-900">Training Completion</p>
+                    <p className="text-sm text-gray-500">95,000+ Enumerators</p>
+                 </div>
+              </div>
+
+              {/* Card 3 */}
+              <div className="bg-white p-6 rounded-3xl shadow-sm flex flex-col justify-between h-[220px] hover:bg-blue-50 transition-colors group">
+                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
+                    <CheckCircle className="w-5 h-5 text-blue-600" />
+                 </div>
+                 <div>
+                    <h4 className="font-bold text-gray-900 mb-2">Survey Web App</h4>
+                    <p className="text-sm text-gray-500 leading-snug">
+                       Comprehensive platform for data collection and management across the state.
+                    </p>
+                 </div>
+              </div>
+
+              {/* Card 4 */}
+              <div className="bg-white p-6 rounded-3xl shadow-sm flex flex-col justify-between h-[220px] hover:bg-emerald-50 transition-colors group">
+                 <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-emerald-200 transition-colors">
+                    <CheckCircle className="w-5 h-5 text-emerald-600" />
+                 </div>
+                 <div>
+                    <h4 className="font-bold text-gray-900 mb-2">AI Training Bot</h4>
+                    <p className="text-sm text-gray-500 leading-snug">
+                       Intelligent chatbot system that trained thousands with interactive modules.
+                    </p>
+                 </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
       </div>
-    </>
+    </div>
   );
 }

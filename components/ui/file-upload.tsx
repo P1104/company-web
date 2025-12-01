@@ -35,7 +35,10 @@ export const FileUpload = ({
 
   const handleFileChange = (newFiles: File[]) => {
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
-    onChange && onChange(newFiles);
+    // FIX: Replaced unused expression with proper if statement
+    if (onChange) {
+      onChange(newFiles);
+    }
   };
 
   const handleClick = () => {
@@ -62,6 +65,8 @@ export const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
+          // FIX: Added title attribute for accessibility compliance
+          title="File upload"
           onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
           className="hidden"
         />

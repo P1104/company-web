@@ -14,7 +14,6 @@ import {
   Briefcase,
 } from "lucide-react";
 import { Globe } from "@/components/ui/globe";
-import Navbar from "@/components/navbar/navbar";
 
 // --- Contact Section One (Hero) ---
 export const ContactSecOne = () => {
@@ -38,9 +37,7 @@ export const ContactSecOne = () => {
           animate="visible"
           variants={containerVariants}
         >
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow overflow-hidden leading-tight text-black tracking-tight"
-          >
+          <motion.h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 drop-shadow overflow-hidden leading-tight text-black tracking-tight">
             {"Get in Touch".split(" ").map((word, i) => (
               <motion.span
                 key={i}
@@ -70,7 +67,8 @@ export const ContactSecOne = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            Ready to transform your business? Let us start a conversation about your goals and how we can help you achieve them.
+            Ready to transform your business? Let us start a conversation about
+            your goals and how we can help you achieve them.
           </motion.p>
         </motion.div>
       </div>
@@ -155,7 +153,6 @@ export function ContactSecTwo() {
     setIsSubmitting(true);
 
     try {
-      // Updated fetch URL to match your API route
       const res = await fetch("/api/contact-form/contact-us-route", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -187,7 +184,8 @@ export function ContactSecTwo() {
           variants={fadeInUp}
         >
           <p className="text-gray-600 text-lg">
-            Tell us about yourself and we&apos;ll get back to you within 24 hours.
+            Tell us about yourself and we&apos;ll get back to you within 24
+            hours.
           </p>
         </motion.div>
 
@@ -211,68 +209,96 @@ export function ContactSecTwo() {
                 >
                   {/* Name */}
                   <div>
-                    <label className="text-black font-medium mb-2 block ml-1">Name *</label>
+                    <label className="text-black font-medium mb-2 block ml-1">
+                      Name *
+                    </label>
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Your Name"
                         value={formData.name}
-                        onChange={(e) => handleInputChange("name", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("name", e.target.value)
+                        }
                         className={`w-full pl-11 pr-4 py-4 bg-gray-50 border rounded-xl text-black placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 transition-all duration-200 ${
                           errors.name ? "border-red-400" : "border-transparent"
                         }`}
                       />
                     </div>
-                    {errors.name && <p className="text-red-400 text-sm mt-2 ml-1">{errors.name}</p>}
+                    {errors.name && (
+                      <p className="text-red-400 text-sm mt-2 ml-1">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="text-black font-medium mb-2 block ml-1">Email *</label>
+                    <label className="text-black font-medium mb-2 block ml-1">
+                      Email *
+                    </label>
                     <div className="relative">
                       <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="email"
                         placeholder="Email Address"
                         value={formData.email}
-                        onChange={(e) => handleInputChange("email", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("email", e.target.value)
+                        }
                         className={`w-full pl-11 pr-4 py-4 bg-gray-50 border rounded-xl text-black placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 transition-all duration-200 ${
                           errors.email ? "border-red-400" : "border-transparent"
                         }`}
                       />
                     </div>
-                    {errors.email && <p className="text-red-400 text-sm mt-2 ml-1">{errors.email}</p>}
+                    {errors.email && (
+                      <p className="text-red-400 text-sm mt-2 ml-1">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="text-black font-medium mb-2 block ml-1">Phone *</label>
+                    <label className="text-black font-medium mb-2 block ml-1">
+                      Phone *
+                    </label>
                     <div className="relative">
                       <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="tel"
                         placeholder="Phone Number"
                         value={formData.phone}
-                        onChange={(e) => handleInputChange("phone", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("phone", e.target.value)
+                        }
                         className={`w-full pl-11 pr-4 py-4 bg-gray-50 border rounded-xl text-black placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 transition-all duration-200 ${
                           errors.phone ? "border-red-400" : "border-transparent"
                         }`}
                       />
                     </div>
-                    {errors.phone && <p className="text-red-400 text-sm mt-2 ml-1">{errors.phone}</p>}
+                    {errors.phone && (
+                      <p className="text-red-400 text-sm mt-2 ml-1">
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
 
                   {/* Company */}
                   <div>
-                    <label className="text-black font-medium mb-2 block ml-1">Company</label>
+                    <label className="text-black font-medium mb-2 block ml-1">
+                      Company
+                    </label>
                     <div className="relative">
                       <Building className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Company Name"
                         value={formData.company}
-                        onChange={(e) => handleInputChange("company", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("company", e.target.value)
+                        }
                         className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-transparent rounded-xl text-black placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 transition-all duration-200"
                       />
                     </div>
@@ -280,14 +306,18 @@ export function ContactSecTwo() {
 
                   {/* Designation */}
                   <div>
-                     <label className="text-black font-medium mb-2 block ml-1">Designation</label>
+                    <label className="text-black font-medium mb-2 block ml-1">
+                      Designation
+                    </label>
                     <div className="relative">
                       <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Job Title"
                         value={formData.designation}
-                        onChange={(e) => handleInputChange("designation", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("designation", e.target.value)
+                        }
                         className="w-full pl-11 pr-4 py-4 bg-gray-50 border border-transparent rounded-xl text-black placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 transition-all duration-200"
                       />
                     </div>
@@ -295,20 +325,30 @@ export function ContactSecTwo() {
 
                   {/* Message */}
                   <div>
-                    <label className="text-black font-medium mb-2 block ml-1">Message *</label>
+                    <label className="text-black font-medium mb-2 block ml-1">
+                      Message *
+                    </label>
                     <div className="relative">
                       <MessageSquare className="absolute left-4 top-4 h-5 w-5 text-gray-400" />
                       <textarea
                         placeholder="How can we help you?"
                         rows={6}
                         value={formData.message}
-                        onChange={(e) => handleInputChange("message", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("message", e.target.value)
+                        }
                         className={`w-full pl-11 pr-4 py-4 bg-gray-50 border rounded-xl text-black placeholder-gray-400 focus:outline-none focus:bg-white focus:border-gray-300 resize-none transition-all duration-200 ${
-                          errors.message ? "border-red-400" : "border-transparent"
+                          errors.message
+                            ? "border-red-400"
+                            : "border-transparent"
                         }`}
                       />
                     </div>
-                    {errors.message && <p className="text-red-400 text-sm mt-2 ml-1">{errors.message}</p>}
+                    {errors.message && (
+                      <p className="text-red-400 text-sm mt-2 ml-1">
+                        {errors.message}
+                      </p>
+                    )}
                   </div>
 
                   {/* Submit Button */}
@@ -325,7 +365,11 @@ export function ContactSecTwo() {
                           <motion.div
                             className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full"
                             animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                            transition={{
+                              duration: 1,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
                           />
                           Sending...
                         </>
@@ -352,7 +396,12 @@ export function ContactSecTwo() {
                     onClick={() => {
                       setIsSubmitted(false);
                       setFormData({
-                        name: "", email: "", company: "", designation: "", phone: "", message: "",
+                        name: "",
+                        email: "",
+                        company: "",
+                        designation: "",
+                        phone: "",
+                        message: "",
                       });
                       setErrors({});
                     }}
@@ -367,7 +416,9 @@ export function ContactSecTwo() {
 
           {/* RIGHT COLUMN - GLOBE CARD */}
           <motion.div
-            className="hidden lg:flex items-center justify-center sticky top-24"
+            // UPDATED: Removed "hidden". Added "flex" for all screens.
+            // Added "mt-12" for mobile spacing. Added "lg:sticky" so it only sticks on desktop.
+            className="flex w-full items-center justify-center mt-12 lg:mt-0 lg:sticky lg:top-24"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
@@ -402,17 +453,12 @@ export function ContactSecTwo() {
 export default function ContactCombo() {
   return (
     <div className="bg-[#FFFAF7] min-h-screen relative overflow-x-hidden font-sans">
-      
-      {/* Theme Decorative Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-         <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-         <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
-      </div>
-
-      <div className="absolute top-8 left-0 right-0 z-50 flex justify-center">
-          <Navbar />
+      {/* Responsive Decorative Lines */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
+        <div className="absolute top-4 sm:top-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute bottom-4 sm:bottom-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute top-0 left-4 sm:left-10 h-full w-px sm:w-1 bg-gray-400"></div>
+        <div className="absolute top-0 right-4 sm:right-10 h-full w-px sm:w-1 bg-gray-400"></div>
       </div>
 
       <ContactSecOne />

@@ -24,7 +24,7 @@ export default function HomeSectionOne() {
             playsInline
             className="w-full h-full object-cover"
           >
-            <source src="/aivideo.mp4" type="video/mp4" />
+            <source src="/demo1.mp4" type="video/mp4" />
           </video>
 
           {/* Dark Overlay */}
@@ -33,9 +33,9 @@ export default function HomeSectionOne() {
         </div>
 
         {/* Navbar - Positioned Absolutely at Top */}
-        <div className="absolute top-6 left-0 right-0 z-50 flex justify-center">
+        {/* <div className="absolute top-6 left-0 right-0 z-50 flex justify-center">
           <Navbar />
-        </div>
+        </div> */}
 
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto">

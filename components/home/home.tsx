@@ -1,6 +1,7 @@
 import HomeSectionFive from "./home-five/home-five";
 import { HomeSectionFour } from "./home-four/home-four";
 import HomeSectionOne from "./home-one/home-one";
+import { HomeSectionSeven } from "./home-seven/home-seven";
 import HomeSectionThree from "./home-three/home-three";
 import HomeSectiontwo from "./home-two/home-two";
 
@@ -12,6 +13,7 @@ export default function HomeSection() {
       <HomeSectionThree />
       <HomeSectionFive />
       <HomeSectiontwo />
+      <HomeSectionSeven />
     </div>
   );
 }

@@ -6,7 +6,8 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 
 export interface MenuBarItem {
-  icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element
+  // FIX: Changed JSX.Element to React.ReactNode to avoid namespace errors
+  icon: (props: React.SVGProps<SVGSVGElement>) => React.ReactNode
   label: string
   href: string
 }
@@ -16,10 +17,12 @@ interface MenuBarProps extends React.HTMLAttributes<HTMLDivElement> {
   activeIndex?: number | null
 }
 
+// FIX: Added 'as const' so 'ease' is inferred as the literal "easeInOut" 
+// instead of a generic string, satisfying Framer Motion types.
 const springConfig = {
   duration: 0.3,
   ease: "easeInOut"
-}
+} as const
 
 export function MenuBar({ items, className, activeIndex, ...props }: MenuBarProps) {
   const [hoverIndex, setHoverIndex] = React.useState<number | null>(null)

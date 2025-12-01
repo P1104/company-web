@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useState, useRef } from "react"
-import Navbar from "@/components/navbar/navbar";
-import {
-  motion,
-  useInView,
-  AnimatePresence,
-  Variants,
-} from "framer-motion";
+import React, { useState, useRef } from "react";
+
+import { motion, useInView, AnimatePresence, Variants } from "framer-motion";
 import { Card, CardHeader } from "@/components/ui/card";
-import { CheckCircle, Zap, Globe, ArrowRight, Bot, BarChart3, Headphones } from "lucide-react";
+import {
+  CheckCircle,
+  Zap,
+  Globe,
+  ArrowRight,
+  Bot,
+  BarChart3,
+  Headphones,
+} from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -32,16 +35,16 @@ const MagneticZap = () => {
       variants={{
         hover: {
           scale: 1.1,
-          transition: { duration: 0.3 }
-        }
+          transition: { duration: 0.3 },
+        },
       }}
     >
       <motion.div
         variants={{
           hover: {
             rotate: [0, -10, 10, -5, 0],
-            transition: { duration: 0.6 }
-          }
+            transition: { duration: 0.6 },
+          },
         }}
       >
         {/* Theme Update: Black Icon */}
@@ -53,8 +56,8 @@ const MagneticZap = () => {
           hover: {
             opacity: 0.4,
             scale: 1.5,
-            transition: { duration: 0.3 }
-          }
+            transition: { duration: 0.3 },
+          },
         }}
       />
     </motion.div>
@@ -101,8 +104,14 @@ const productSuites: ProductSuite[] = [
       { url: "/Adro/Adro-pic-2.png", alt: "Predictive Models" },
     ],
     whyChoose: [
-      { icon: <Zap className="w-4 h-4 text-black flex-shrink-0" />, text: "Easy Integration" },
-      { icon: <Globe className="w-4 h-4 text-black flex-shrink-0" />, text: "Cross-Platform Compatibility" },
+      {
+        icon: <Zap className="w-4 h-4 text-black flex-shrink-0" />,
+        text: "Easy Integration",
+      },
+      {
+        icon: <Globe className="w-4 h-4 text-black flex-shrink-0" />,
+        text: "Cross-Platform Compatibility",
+      },
     ],
   },
   {
@@ -132,8 +141,14 @@ const productSuites: ProductSuite[] = [
       { url: "/ChatBot/Chatbot pic-3.jpeg", alt: "Custom Templates" },
     ],
     whyChoose: [
-      { icon: <Bot className="w-4 h-4 text-black flex-shrink-0" />, text: "No-Code Setup" },
-      { icon: <CheckCircle className="w-4 h-4 text-black flex-shrink-0" />, text: "Ready-to-Use Templates" },
+      {
+        icon: <Bot className="w-4 h-4 text-black flex-shrink-0" />,
+        text: "No-Code Setup",
+      },
+      {
+        icon: <CheckCircle className="w-4 h-4 text-black flex-shrink-0" />,
+        text: "Ready-to-Use Templates",
+      },
     ],
   },
   {
@@ -158,13 +173,28 @@ const productSuites: ProductSuite[] = [
       { label: "Response", value: "< 2s" },
     ],
     carouselImages: [
-      { url: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop", alt: "Customer Service" },
-      { url: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&h=600&fit=crop", alt: "Support Dashboard" },
-      { url: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop", alt: "Team Collaboration" },
+      {
+        url: "/Customer/customer.png",
+        alt: "Customer Service",
+      },
+      {
+        url: "/Customer/customer-one.png",
+        alt: "Support Dashboard",
+      },
+      {
+        url: "/Customer/customertwo.png",
+        alt: "Team Collaboration",
+      },
     ],
     whyChoose: [
-      { icon: <Headphones className="w-4 h-4 text-black flex-shrink-0" />, text: "Multi-Channel Support" },
-      { icon: <ArrowRight className="w-4 h-4 text-black flex-shrink-0" />, text: "Automated Workflows" },
+      {
+        icon: <Headphones className="w-4 h-4 text-black flex-shrink-0" />,
+        text: "Multi-Channel Support",
+      },
+      {
+        icon: <ArrowRight className="w-4 h-4 text-black flex-shrink-0" />,
+        text: "Automated Workflows",
+      },
     ],
   },
 ];
@@ -204,7 +234,7 @@ const ProductCard = React.memo(
         <Card
           className={cn(
             "cursor-pointer transition-all duration-300 overflow-hidden relative group rounded-[2rem]",
-            
+
             isSelected
               ? "border-2 border-black shadow-xl bg-white"
               : "border-none shadow-sm hover:shadow-xl bg-white"
@@ -224,8 +254,12 @@ const ProductCard = React.memo(
               {suite.icon}
             </motion.div>
 
-            <h3 className="text-xl sm:text-2xl font-bold mb-3 text-black">{suite.title}</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed">{suite.description}</p>
+            <h3 className="text-xl sm:text-2xl font-bold mb-3 text-black">
+              {suite.title}
+            </h3>
+            <p className="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed">
+              {suite.description}
+            </p>
 
             <motion.div
               className="inline-flex items-center gap-2 text-black font-bold text-sm hover:opacity-70 transition-opacity"
@@ -271,15 +305,18 @@ export function ProductSecOne() {
       opacity: 1,
       scale: 1,
       filter: "blur(0px)",
-      transition: { duration: 1, delay: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }
+      transition: { duration: 1, delay: 1.2, ease: [0.25, 0.46, 0.45, 0.94] },
     },
-    hover: { scale: 1.05, transition: { duration: 0.3 } }
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
   };
 
   const handleCardClick = (suite: ProductSuite) => {
     setSelectedSuite(suite);
     setTimeout(() => {
-      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      detailRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
     }, 50);
   };
 
@@ -291,19 +328,17 @@ export function ProductSecOne() {
 
   return (
     // Theme Update: Background Color
-    <div className="bg-[#FFFAF7] relative overflow-hidden pt-20 sm:pt-24 md:pt-34 font-sans" onClick={handleOutsideClick}>
-      
-      {/* Theme Update: Decorative Lines */}
+    <div
+      className="bg-[#FFFAF7] relative overflow-hidden pt-20 sm:pt-30 md:pt-32 pb-12 font-sans"
+      onClick={handleOutsideClick}
+    >
+      {/* Responsive Decorative Lines */}
       <div className="absolute inset-0 pointer-events-none opacity-10 z-0">
-         <div className="absolute top-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute bottom-10 left-0 w-full h-1 bg-gray-400"></div>
-         <div className="absolute top-0 left-10 h-full w-1 bg-gray-400"></div>
-         <div className="absolute top-0 right-10 h-full w-1 bg-gray-400"></div>
+        <div className="absolute top-4 sm:top-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute bottom-4 sm:bottom-10 left-0 w-full h-px sm:h-1 bg-gray-400"></div>
+        <div className="absolute top-0 left-4 sm:left-10 h-full w-px sm:w-1 bg-gray-400"></div>
+        <div className="absolute top-0 right-4 sm:right-10 h-full w-px sm:w-1 bg-gray-400"></div>
       </div>
-
-              <div className="absolute top-6 left-0 right-0 z-50 flex justify-center">
-          <Navbar />
-        </div>
 
       <div className="relative z-10">
         {/* Hero Section */}
@@ -345,7 +380,9 @@ export function ProductSecOne() {
 
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
-                animate={isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                animate={
+                  isHeroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
+                }
                 transition={{ duration: 0.8, delay: 2.5 }}
                 className="mt-8 sm:mt-12"
               />
@@ -382,7 +419,8 @@ export function ProductSecOne() {
                 ))}
               </motion.h2>
               <p className="text-lg sm:text-xl text-gray-600 px-4 font-medium">
-                Choose a product as a service to explore its capabilities and components
+                Choose a product as a service to explore its capabilities and
+                components
               </p>
             </motion.div>
 
@@ -408,7 +446,11 @@ export function ProductSecOne() {
                 <motion.div
                   key={selectedSuite.id}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={isDetailInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={
+                    isDetailInView
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 20 }
+                  }
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.5 }}
                   className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start lg:items-center"
@@ -416,7 +458,8 @@ export function ProductSecOne() {
                   {/* Left Content */}
                   <div className="order-2 lg:order-1">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-                      <div className={cn(
+                      <div
+                        className={cn(
                           "w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-md",
                           "bg-gradient-to-r",
                           selectedSuite.color
@@ -443,7 +486,10 @@ export function ProductSecOne() {
                       </h3>
                       <motion.ul className="space-y-3">
                         {selectedSuite.features.map((feature, index) => (
-                          <motion.li key={index} className="flex items-start gap-3 text-gray-700">
+                          <motion.li
+                            key={index}
+                            className="flex items-start gap-3 text-gray-700"
+                          >
                             <CheckCircle className="w-5 h-5 text-black flex-shrink-0 mt-0.5" />
                             <span className="text-lg">{feature}</span>
                           </motion.li>
@@ -457,11 +503,14 @@ export function ProductSecOne() {
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {selectedSuite.whyChoose.map((item, i) => (
-                           <div key={i} className="flex items-center gap-3 text-gray-700">
-                              {/* Clone element to ensure icon styling consistency if needed */}
-                              <div className="text-black">{item.icon}</div>
-                              <span className="font-medium">{item.text}</span>
-                           </div>
+                          <div
+                            key={i}
+                            className="flex items-center gap-3 text-gray-700"
+                          >
+                            {/* Clone element to ensure icon styling consistency if needed */}
+                            <div className="text-black">{item.icon}</div>
+                            <span className="font-medium">{item.text}</span>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -499,7 +548,7 @@ export function ProductSecOne() {
                           <CarouselNext className="bg-white/90 border-none text-black hover:bg-white" />
                         </div>
                       </Carousel>
-                      
+
                       <div className="mt-8 pt-6 border-t border-gray-100">
                         <h3 className="text-2xl font-bold mb-2 text-black">
                           {selectedSuite.title} Stats
@@ -514,7 +563,9 @@ export function ProductSecOne() {
                               <div className="font-bold text-xl text-black">
                                 {stat.value}
                               </div>
-                              <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
+                              <div className="text-sm text-gray-500 font-medium">
+                                {stat.label}
+                              </div>
                             </div>
                           ))}
                         </div>
