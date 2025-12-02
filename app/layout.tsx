@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer/footer";
-import EDCSChatBot from "@/components/chatbot";
+// import EDCSChatBot from "@/components/chatbot";
 import Navbar from "@/components/navbar/navbar";
 
 const geistSans = Geist({
@@ -33,7 +33,7 @@ export default function RootLayout({
         <div className="absolute top-6 left-0 right-0 z-50 flex justify-center">
           <Navbar />
         </div>{" "}
-        <EDCSChatBot />
+        {/* <EDCSChatBot /> */}
         {children}
         <Footer />
       </body>
