@@ -11,7 +11,6 @@ import {
   Instagram,
   Sparkles,
   CheckCircle,
-  X
 } from "lucide-react";
 
 // --- Types ---
