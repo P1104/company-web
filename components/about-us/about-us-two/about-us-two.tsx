@@ -119,7 +119,7 @@ const TeamMemberCard: React.FC<{ member: TeamMember; index: number }> = ({
 export const AboutSectionTwo: React.FC<TeamSectionProps> = ({
   teamMembers = [
     {
-      name: "Srinivas Navali",
+      name: "Shrinivas Navali",
       role: "Advisor",
       description: "IT Veteran with over 30 years experience.",
       image: "/srinivas.jpg",

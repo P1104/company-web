@@ -497,7 +497,7 @@ export function Footer() {
           
           <div className="pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-black font-medium text-sm">
-              © 2025 Equilibrate.AI. All rights reserved.
+              © 2025 Equilibrate.AI Technologies Pvt Ltd. All rights reserved.
             </p>
           </div>
         </div>

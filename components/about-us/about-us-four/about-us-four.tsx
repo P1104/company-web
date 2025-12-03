@@ -104,7 +104,7 @@ export default function AboutSectionFour() {
             <span className="font-semibold text-gray-900">
               Equilibrate.AI Technologies Pvt. Ltd.
             </span>{" "}
-            is proud to be recognised as a an AI startup by Startup India(DPIIT)
+            is proud to be recognized as a an AI startup by Startup India(DPIIT)
           </p>
 
           <div className="pt-8 flex flex-col items-center justify-center">

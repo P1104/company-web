@@ -90,7 +90,7 @@ export const AboutSectionOne: React.FC<AboutSectionProps> = ({
   foundedYear = "2025",
   headquarters = "Bangalore",
   specialization = "AI Specialists",
-  story = "Equilibrate.AI came into existence when the founders saw the whole world overwhelmed by rapid AI growth and development. Many businesses want to integrate AI into their workflows but are not sure where to start and clueless about the effort. The core principle is to democratise existing tech with the use of AI. Determined to make AI more approachable in business settings, Equilibrate.AI is on the journey to build feature-rich, easy-to-use and cutting edge AI products and solutions. AI is here to make our lives better, so let us embrace it in the right way.",
+  story = "Equilibrate.AI came into existence when the founders saw the whole world overwhelmed by rapid AI growth and development. Many businesses want to integrate AI into their workflows but are not sure where to start and clueless about the effort. The core principle is to democratize existing tech with the use of AI. Determined to make AI more approachable in business settings, Equilibrate.AI is on the journey to build feature-rich, easy-to-use and cutting edge AI products and solutions. AI is here to make our lives better, so let us embrace it in the right way.",
 }) => {
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
